@@ -1,13 +1,24 @@
-import express, { json, Request, Response } from 'express';
-import dotenv from 'dotenv';
+import express, { Express } from 'express';
 import { handleApplicationErrors } from './middlewares/error-handler';
+import cors from 'cors';
+import { loadEnv, connectDb, disconnectDB } from './config';
 
-dotenv.config();
+loadEnv();
 
 const app = express();
-app.use(json());
+app
+    .use(cors())
+    .use(express.json())
+    .get('/health', (_req, res) => res.send("ok!"))
+    .use(handleApplicationErrors);
 
-app.get('/health', (req: Request, res: Response) => res.send("ok!"));
-app.use(handleApplicationErrors);
+export function init(): Promise<Express> {
+    connectDb();
+    return Promise.resolve(app)
+}
+
+export async function close(): Promise<void> {
+    await disconnectDB();
+}
 
 export default app;

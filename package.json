@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "nodemon src/index.ts",
+    "dev": "cross-env NODE_ENV=development nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register ./src/index.ts' -e ts",
+    "dev:load-envs": "dotenv -e .env.development",
     "test:load-envs": "dotenv -e .env.test",
     "test": "npm run test:load-envs jest",
     "migrate:prod": "dotenv -e .env prisma migrate deploy",
@@ -22,6 +23,7 @@
     "@prisma/client": "^5.3.1",
     "axios": "^1.5.1",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dayjs": "^1.11.10",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
@@ -40,6 +42,7 @@
     "nodemon": "^3.0.1",
     "prisma": "^5.3.1",
     "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.2.2"
   }
 }
