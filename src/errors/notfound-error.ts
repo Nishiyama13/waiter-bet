@@ -1,4 +1,4 @@
-import { ApplicationError } from '../middlewares/error-handler';
+import { ApplicationError } from '../protocols';
 export function notFoundError(message?: string): ApplicationError{
     const errorMsg = message || 'Not Found';
     return {

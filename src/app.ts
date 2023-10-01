@@ -1,5 +1,5 @@
 import express, { Express } from 'express';
-import { handleApplicationErrors } from './middlewares/error-handler';
+import { handleApplicationErrors } from './middlewares';
 import cors from 'cors';
 import { loadEnv, connectDb, disconnectDB } from './config';
 

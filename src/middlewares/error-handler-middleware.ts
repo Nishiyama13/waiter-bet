@@ -1,12 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status';
+import { ApplicationError } from '../protocols';
 
-export type ApplicationError = {
-    name: string;
-    message: string;
-};
-
-export function handleApplicationErrors(err: ApplicationError | Error, _req: Request, res: Response, next: NextFunction) {
+export function handleApplicationErrors(err: ApplicationError | Error, _req: Request, res: Response, _next: NextFunction) {
     console.log(err);
 
     if (err.name === "NotFoundError") {
