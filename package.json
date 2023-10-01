@@ -1,0 +1,44 @@
+{
+  "name": "waiter-bet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "nodemon src/index.ts",
+    "test:load-envs": "dotenv -e .env.test",
+    "test": "npm run test:load-envs jest",
+    "migrate:prod": "dotenv -e .env prisma migrate deploy",
+    "migrate:dev": "dotenv -e .env.development prisma migrate deploy",
+    "migrate:test": "dotenv -e .env.test prisma migrate deploy",
+    "generate": "npx prisma generate",
+    "prisma:pull": "npx prisma db pull"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.5.1",
+    "cors": "^2.8.5",
+    "dayjs": "^1.11.10",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "http-status": "^1.7.0",
+    "joi": "^17.10.2",
+    "pg": "^8.11.3"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/cors": "^2.8.14",
+    "@types/express": "^4.17.18",
+    "@types/jest": "^29.5.5",
+    "@types/node": "^20.8.0",
+    "dotenv-cli": "^7.3.0",
+    "express-async-errors": "^3.1.1",
+    "nodemon": "^3.0.1",
+    "prisma": "^5.3.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  }
+}
