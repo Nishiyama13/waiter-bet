@@ -19,3 +19,15 @@ export async function createParticipant(req: Request, res: Response ) {
     }
     
 }
+
+export async function getParticipants(req: Request, res: Response) {
+    try {
+        const participants = await participantsService.getParticipants();
+        return res.send(participants);
+    } catch (error) {
+        if (error.name === 'NotFound') {
+            return res.status(httpStatus.NOT_FOUND).send(error);
+        }
+        return res.status(httpStatus.INTERNAL_SERVER_ERROR).send(error);
+    }
+}

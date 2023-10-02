@@ -15,9 +15,14 @@ async function findParticipantByName(name: string) {
     })
 }
 
+async function findParticipants() {
+    return prisma.participant.findMany();    
+}
+
 const participantsRepository = {
     create,
     findParticipantByName,
+    findParticipants,
 }
 
 export default participantsRepository;

@@ -1,7 +1,7 @@
 import { Participant } from "@prisma/client";
 import { CreateParticipantInput } from "../../protocols";
 import participantsRepository from "../../repositories/participants-repository";
-import { duplicateParticipantError } from "../../errors";
+import { duplicateParticipantError, notFoundError } from "../../errors";
 
 async function  validateUniqueName(name:string) {
     const participantWithSameName = await participantsRepository.findParticipantByName(name);
@@ -21,8 +21,15 @@ async function createParticipant({ name, balance }: CreateParticipantInput): Pro
     return participant;
 }
 
+async function getParticipants(): Promise<Participant[]> {
+    const participants = await participantsRepository.findParticipants();
+    if (!participants) throw notFoundError();
+    return participants;
+}
+
 const participantsService = {
     createParticipant,
+    getParticipants,
 }
 
 export default participantsService;
