@@ -1,3 +1,4 @@
+export * from './invalid-data-error';
 export * from './notfound-error';
 export * from './create-bet-error';
 export * from './create-participant-error';
