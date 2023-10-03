@@ -1,6 +1,4 @@
-import { number, string } from "joi"
-
-export type Bet = {
+export type BetType = {
     id: number,
     createdAt: string,
     updatedAt: string,

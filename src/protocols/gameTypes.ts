@@ -1,5 +1,3 @@
-//import { Bet } from './betTypes';
-
 export type GameType = {
     id: number,
     createdAt: string,
@@ -15,5 +13,3 @@ export type CreateGameInput = {
     homeTeamName: string,
     awayTeamName: string
 }
-
-//export type GameResponse = Omit<GameType, 'bets'>

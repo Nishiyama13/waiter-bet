@@ -1,4 +1,4 @@
-import { Bet } from './betTypes';
+import { BetType } from './betTypes';
 
 export type Participant = {
     id: number,
@@ -6,7 +6,7 @@ export type Participant = {
     updatedAt: string,
     name: string,
     balance: number,
-    bets: Bet[] 
+    bets: BetType[] 
 }
 
 export type CreateParticipantInput = {

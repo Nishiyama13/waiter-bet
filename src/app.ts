@@ -4,7 +4,7 @@ import cors from 'cors';
 import { loadEnv, connectDb, disconnectDB } from './config';
 loadEnv();
 
-import { gamesRouter, participantsRouter } from './routers';
+import { betsRouter, gamesRouter, participantsRouter } from './routers';
 
 const app = express();
 app
@@ -13,6 +13,7 @@ app
     .get('/health', (_req, res) => res.send("ok!"))
     .use('/participants', participantsRouter)
     .use('/games', gamesRouter)
+    .use('/bets', betsRouter)
     .use(handleApplicationErrors);
 
 export function init(): Promise<Express> {
