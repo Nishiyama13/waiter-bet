@@ -11,7 +11,7 @@ async function validateBalance(amountBet:number, participantId: number) {
     const valueAfterPurchase = participantData.balance - amountBet
     const roundedValue = Math.floor(valueAfterPurchase);
 
-    if(roundedValue <= 0) {
+    if(roundedValue < 0) {
         throw insufficientFundsError();
     }
 
@@ -28,27 +28,16 @@ async function validateActiveGame(gameId: number) {
     }
 }
 
-async function upDateParticipantBalance( participantId: number, newBalance: number) {
-    const participantUpDateData: ParticipantType = await participantsService.upDateBalanceParticipant(participantId, newBalance);
-    console.log(participantUpDateData);
-
-    if (!participantUpDateData) {
-        throw createBetError('Your bet cannot be placed, please try later! treta no update ');
-    }
-}
-
 async function createBet({ homeTeamScore, awayTeamScore, amountBet, gameId, participantId }: CreateBetInput): Promise <BetType> {
     await validateActiveGame(gameId);
-    const newBalance: number = await validateBalance( amountBet, participantId );
+    await validateBalance( amountBet, participantId );
 
-    const bet = await betsRepository.create({ homeTeamScore, awayTeamScore, amountBet, gameId, participantId });
+    const bet = await betsRepository.createBet({ homeTeamScore, awayTeamScore, amountBet, gameId, participantId });
     if (!bet) {
         throw createBetError('Your bet cannot be placed, please try later!');
     }
-
-    await upDateParticipantBalance(participantId, newBalance);
     
-    const formattedBet = formatBet(bet);
+    const formattedBet = formatBet(bet[0]);
     return formattedBet;
 }
 
