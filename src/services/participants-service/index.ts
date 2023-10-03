@@ -18,9 +18,19 @@ async function createParticipant({ name, balance }: CreateParticipantInput): Pro
         name,
         balance,
     });
-    const createdAtString =participant.createdAt.toISOString();
-    const updatedAtString =participant.updatedAt.toISOString();
-    return {...participant, createdAt:createdAtString, updatedAt:updatedAtString};
+    const formattedParticipant = formatParticipant(participant)
+    return formattedParticipant;
+}
+
+function formatParticipant(participant: Participant) {
+    const formattedParticipant: ParticipantType = {
+        id: participant.id,
+        createdAt: participant.createdAt.toISOString(),
+        updatedAt: participant.updatedAt.toISOString(),
+        name: participant.name,
+        balance: participant.balance,
+    };
+    return formattedParticipant;
 }
 
 async function getParticipants(): Promise<Participant[]> {
