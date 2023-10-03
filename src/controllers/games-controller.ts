@@ -18,6 +18,10 @@ export async function createGame(req: Request, res: Response ) {
             isFinished: game.isFinished,
         });
     } catch (error) {
+        if (error.name === 'DuplicateGameError') {
+            return res.status(httpStatus.CONFLICT).send(error);
+        }
+
         return res.status(httpStatus.BAD_REQUEST).send(error);
     }
 }

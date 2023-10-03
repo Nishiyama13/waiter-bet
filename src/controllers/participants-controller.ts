@@ -17,7 +17,6 @@ export async function createParticipant(req: Request, res: Response ) {
         }
         return res.status(httpStatus.BAD_REQUEST).send(error);
     }
-    
 }
 
 export async function getParticipants(req: Request, res: Response) {

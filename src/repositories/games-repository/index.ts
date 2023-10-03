@@ -8,8 +8,21 @@ async function create(data: CreateGameInput) {
     });    
 }
 
+async function findActiveGamesWithTheSameTeamPair(data: CreateGameInput) {
+    const findActiveGameWithTheSameTeamPair = await prisma.game.findFirst({
+        where: {
+            homeTeamName: data.homeTeamName,
+            awayTeamName: data.awayTeamName,
+            isFinished: false
+        }
+    });
+
+    return findActiveGameWithTheSameTeamPair;
+}
+
 const gamesRepository = {
     create,
+    findActiveGamesWithTheSameTeamPair,
 }
 
 export default gamesRepository;
