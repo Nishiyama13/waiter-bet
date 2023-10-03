@@ -19,10 +19,22 @@ async function findParticipants() {
     return prisma.participant.findMany();    
 }
 
+async function findParticipantById(id:number) {
+    return prisma.participant.findFirst({
+        where: {
+            id,
+        },
+        include: {
+            bets: true,
+        }
+    });
+}
+
 const participantsRepository = {
     create,
     findParticipantByName,
     findParticipants,
+    findParticipantById,
 }
 
 export default participantsRepository;

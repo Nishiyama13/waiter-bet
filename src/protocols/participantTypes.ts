@@ -1,12 +1,9 @@
-import { BetType } from './betTypes';
-
-export type Participant = {
+export type ParticipantType = {
     id: number,
     createdAt: string,
     updatedAt: string,
     name: string,
-    balance: number,
-    bets: BetType[] 
+    balance: number
 }
 
 export type CreateParticipantInput = {
@@ -14,4 +11,4 @@ export type CreateParticipantInput = {
     balance: number,
 }
 
-export type ParticipantResponse = Omit<Participant, 'bets'>
+export type ParticipantResponse = Omit<ParticipantType, 'bets'>

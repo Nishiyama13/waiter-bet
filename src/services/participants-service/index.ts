@@ -1,5 +1,5 @@
-import { Participant } from "@prisma/client";
-import { CreateParticipantInput } from "../../protocols";
+import { Bet, Participant } from "@prisma/client";
+import { CreateParticipantInput, ParticipantType } from "../../protocols";
 import participantsRepository from "../../repositories/participants-repository";
 import { duplicateParticipantError, notFoundError } from "../../errors";
 
@@ -10,7 +10,7 @@ async function  validateUniqueName(name:string) {
     }
 }
 
-async function createParticipant({ name, balance }: CreateParticipantInput): Promise <Participant> {
+async function createParticipant({ name, balance }: CreateParticipantInput): Promise <ParticipantType> {
 
     await validateUniqueName(name);
 
@@ -18,7 +18,9 @@ async function createParticipant({ name, balance }: CreateParticipantInput): Pro
         name,
         balance,
     });
-    return participant;
+    const createdAtString =participant.createdAt.toISOString();
+    const updatedAtString =participant.updatedAt.toISOString();
+    return {...participant, createdAt:createdAtString, updatedAt:updatedAtString};
 }
 
 async function getParticipants(): Promise<Participant[]> {
@@ -27,9 +29,19 @@ async function getParticipants(): Promise<Participant[]> {
     return participants;
 }
 
+async function getParticipantById(id: number): Promise<Participant & { bets: Bet[] }> 
+    {
+    const participant = await participantsRepository.findParticipantById(id);
+
+    if (!participant) throw notFoundError('Participant not found with id' + id);
+    return participant; 
+}
+
+
 const participantsService = {
     createParticipant,
     getParticipants,
+    getParticipantById,
 }
 
 export default participantsService;

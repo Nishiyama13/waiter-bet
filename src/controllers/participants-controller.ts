@@ -30,3 +30,17 @@ export async function getParticipants(req: Request, res: Response) {
         return res.status(httpStatus.INTERNAL_SERVER_ERROR).send(error);
     }
 }
+
+export async function getParticipantById(req:Request, res:Response) {
+    const { id } = req.params;
+
+    try {
+        const participant = await participantsService.getParticipantById(Number(id));
+        return res.send(participant);
+    } catch (error) {
+        if (error.name === 'NotFound') {
+            return res.status(httpStatus.NOT_FOUND).send(error);
+        }
+        return res.status(httpStatus.INTERNAL_SERVER_ERROR).send(error);
+    }
+}
