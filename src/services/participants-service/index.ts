@@ -42,16 +42,25 @@ async function getParticipants(): Promise<Participant[]> {
 async function getParticipantById(id: number): Promise<Participant & { bets: Bet[] }> 
     {
     const participant = await participantsRepository.findParticipantById(id);
-
     if (!participant) throw notFoundError('Participant not found with id' + id);
     return participant; 
 }
 
+async function upDateBalanceParticipant( id: number, newBalance:number ) : Promise <ParticipantType> {
+
+    const participant = await participantsRepository.findParticipantById(id);
+    if (!participant) throw notFoundError('Participant not found with id' + id);
+
+    const upDateParticipant = await participantsRepository.upDateBalanceByParticipantId(id, newBalance);
+    const formattedUpDateParticipant = formatParticipant(upDateParticipant)
+    return formattedUpDateParticipant;
+}
 
 const participantsService = {
     createParticipant,
     getParticipants,
     getParticipantById,
+    upDateBalanceParticipant,
 }
 
 export default participantsService;

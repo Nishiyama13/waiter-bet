@@ -37,7 +37,7 @@ async function createBet({ homeTeamScore, awayTeamScore, amountBet, gameId, part
     if (!bet) {
         throw createBetError('Your bet cannot be placed, please try later!');
     }
-    //update participant.balance to newBalance
+    //update participant.balance to newBalance // participantId, newBalance
     const formattedBet = formatBet(bet);
     return formattedBet;
 }

@@ -30,11 +30,23 @@ async function findParticipantById(id:number) {
     });
 }
 
+async function upDateBalanceByParticipantId( id: number, balance: number ) {
+    return prisma.participant.update({
+        where: {
+            id,
+        },
+        data: {
+            balance: balance,
+        },
+    });
+}
+
 const participantsRepository = {
     create,
     findParticipantByName,
     findParticipants,
     findParticipantById,
+    upDateBalanceByParticipantId,
 }
 
 export default participantsRepository;
