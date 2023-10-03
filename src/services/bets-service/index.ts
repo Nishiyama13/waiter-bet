@@ -1,4 +1,4 @@
-import { BetType, CreateBetInput } from "../../protocols";
+import { BetType, CreateBetInput, ParticipantType } from "../../protocols";
 import betsRepository from "../../repositories/bets-repository";
 import { createBetError, insufficientFundsError } from "../../errors";
 import participantsService from "../participants-service";
@@ -22,10 +22,18 @@ async function validateActiveGame(gameId: number) {
     const game: Game = await gamesService.getGameById(gameId);
 
     const gameIsFinished = game.isFinished;
-    console.log(gameIsFinished);
 
     if (gameIsFinished) {
         throw createBetError('This game has already been finished');
+    }
+}
+
+async function upDateParticipantBalance( participantId: number, newBalance: number) {
+    const participantUpDateData: ParticipantType = await participantsService.upDateBalanceParticipant(participantId, newBalance);
+    console.log(participantUpDateData);
+
+    if (!participantUpDateData) {
+        throw createBetError('Your bet cannot be placed, please try later! treta no update ');
     }
 }
 
@@ -37,7 +45,9 @@ async function createBet({ homeTeamScore, awayTeamScore, amountBet, gameId, part
     if (!bet) {
         throw createBetError('Your bet cannot be placed, please try later!');
     }
-    //update participant.balance to newBalance // participantId, newBalance
+
+    await upDateParticipantBalance(participantId, newBalance);
+    
     const formattedBet = formatBet(bet);
     return formattedBet;
 }

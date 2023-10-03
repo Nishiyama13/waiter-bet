@@ -1,7 +1,7 @@
 import { Bet, Participant } from "@prisma/client";
 import { CreateParticipantInput, ParticipantType } from "../../protocols";
 import participantsRepository from "../../repositories/participants-repository";
-import { duplicateParticipantError, notFoundError } from "../../errors";
+import { duplicateParticipantError, notFoundError, updateParticipantBalanceError } from "../../errors";
 
 async function  validateUniqueName(name:string) {
     const participantWithSameName = await participantsRepository.findParticipantByName(name);
@@ -52,6 +52,7 @@ async function upDateBalanceParticipant( id: number, newBalance:number ) : Promi
     if (!participant) throw notFoundError('Participant not found with id' + id);
 
     const upDateParticipant = await participantsRepository.upDateBalanceByParticipantId(id, newBalance);
+    if (!upDateParticipant) throw (updateParticipantBalanceError());
     const formattedUpDateParticipant = formatParticipant(upDateParticipant)
     return formattedUpDateParticipant;
 }

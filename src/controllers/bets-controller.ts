@@ -19,6 +19,9 @@ export async function createBet(req: Request, res: Response ) {
         if (error.message === 'Your bet cannot be placed, please try later!') {
             return res.status(httpStatus.INTERNAL_SERVER_ERROR).send(error);
         }
+        if (error.message === 'Your bet cannot be placed, please try later!') {
+            return res.status(httpStatus.INTERNAL_SERVER_ERROR).send(error);
+        }
         
         return res.status(httpStatus.BAD_REQUEST).send(error);
     }
