@@ -25,3 +25,15 @@ export async function createGame(req: Request, res: Response ) {
         return res.status(httpStatus.BAD_REQUEST).send(error);
     }
 }
+
+export async function getGames(req: Request, res: Response) {
+    try {
+        const games = await gamesService.getGames();
+        return res.send(games);
+    } catch (error) {
+        if (error.name === 'NotFound') {
+            return res.status(httpStatus.NOT_FOUND).send(error);
+        }
+        return res.status(httpStatus.INTERNAL_SERVER_ERROR).send(error);
+    }
+}

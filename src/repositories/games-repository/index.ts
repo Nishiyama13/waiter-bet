@@ -20,9 +20,14 @@ async function findActiveGamesWithTheSameTeamPair(data: CreateGameInput) {
     return findActiveGameWithTheSameTeamPair;
 }
 
+async function findGames() {
+    return prisma.game.findMany();    
+}
+
 const gamesRepository = {
     create,
     findActiveGamesWithTheSameTeamPair,
+    findGames,
 }
 
 export default gamesRepository;

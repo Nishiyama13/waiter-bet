@@ -1,7 +1,7 @@
 import { Game } from "@prisma/client";
-import { CreateGameInput, GameType } from "../../protocols";
+import { CreateGameInput } from "../../protocols";
 import gamesRepository from "../../repositories/games-repository";
-import { duplicateGameError } from "../../errors";
+import { duplicateGameError, notFoundError } from "../../errors";
 
 async function validateSinglePairOfTeamsInActiveGame(homeTeamName: string, awayTeamName:string) {
     const existingGame: Game = await gamesRepository.findActiveGamesWithTheSameTeamPair({ homeTeamName, awayTeamName });
@@ -21,8 +21,15 @@ async function createGame({ homeTeamName, awayTeamName }: CreateGameInput): Prom
     return game;
 }
 
+async function getGames(): Promise<Game[]> {
+    const games = await gamesRepository.findGames();
+    if (!games) throw notFoundError();
+    return games;
+}
+
 const gamesService = {
     createGame,
+    getGames,
 }
 
 export default gamesService;
