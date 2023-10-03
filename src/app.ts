@@ -2,9 +2,9 @@ import express, { Express } from 'express';
 import { handleApplicationErrors } from './middlewares';
 import cors from 'cors';
 import { loadEnv, connectDb, disconnectDB } from './config';
-import { gamesRouter, participantsRouter } from './routers';
-
 loadEnv();
+
+import { gamesRouter, participantsRouter } from './routers';
 
 const app = express();
 app
