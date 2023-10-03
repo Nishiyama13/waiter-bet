@@ -18,9 +18,22 @@ async function createGame({ homeTeamName, awayTeamName }: CreateGameInput): Prom
         homeTeamName,
         awayTeamName,
     });
-    const createdAtString =game.createdAt.toISOString();
-    const updatedAtString =game.updatedAt.toISOString();
-    return {...game, createdAt:createdAtString, updatedAt:updatedAtString};
+    const formattedGame = formatGame(game);
+    return formattedGame
+}
+
+function formatGame(game: Game) {
+    const formattedGame: GameType = {
+        id: game.id,
+        createdAt: game.createdAt.toISOString(),
+        updatedAt: game.updatedAt.toISOString(),
+        homeTeamName: game.homeTeamName,
+        awayTeamName: game.awayTeamName,
+        homeTeamScore: game.homeTeamScore,
+        awayTeamScore: game.awayTeamScore,
+        isFinished: game.isFinished,
+    };
+    return formattedGame;
 }
 
 async function getGames(): Promise<Game[]> {

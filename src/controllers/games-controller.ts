@@ -8,16 +8,7 @@ export async function createGame(req: Request, res: Response ) {
 
     try {
         const game = await gamesService.createGame({ homeTeamName, awayTeamName });
-        return res.status(httpStatus.CREATED).json({
-            id: game.id,
-            createdAt: game.createdAt,
-            updatedAt: game.updatedAt,
-            homeTeamName: game.homeTeamName,
-            awayTeamName: game.awayTeamName,
-            homeTeamScore: game.homeTeamScore,
-            awayTeamScore: game.awayTeamScore,
-            isFinished: game.isFinished,
-        });
+        return res.status(httpStatus.CREATED).json(game);
     } catch (error) {
         if (error.name === 'DuplicateGameError') {
             return res.status(httpStatus.CONFLICT).send(error);
