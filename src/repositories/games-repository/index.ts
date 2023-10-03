@@ -24,10 +24,22 @@ async function findGames() {
     return prisma.game.findMany();    
 }
 
+async function findGameById(gameId:number) {
+    return prisma.game.findFirst({
+        where: {
+            id: gameId,
+        },
+        include: {
+            bets: true,
+        }
+    });
+}
+
 const gamesRepository = {
     create,
     findActiveGamesWithTheSameTeamPair,
     findGames,
+    findGameById,
 }
 
 export default gamesRepository;

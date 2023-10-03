@@ -1,4 +1,4 @@
-import { Bet } from './betTypes';
+//import { Bet } from './betTypes';
 
 export type GameType = {
     id: number,
@@ -9,7 +9,6 @@ export type GameType = {
     homeTeamScore: number,
     awayTeamScore: number,
     isFinished: boolean,
-    bets: Bet[]
 }
 
 export type CreateGameInput = {
@@ -17,4 +16,4 @@ export type CreateGameInput = {
     awayTeamName: string
 }
 
-export type GameResponse = Omit<GameType, 'bets'>
+//export type GameResponse = Omit<GameType, 'bets'>

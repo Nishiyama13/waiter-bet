@@ -16,7 +16,7 @@ model Participant {
   updatedAt DateTime @updatedAt
   name      String   @unique
   balance   Int
-  Bet       Bet[]
+  bets      Bet[]
 
   @@map("participants")
 }
@@ -30,7 +30,7 @@ model Game {
   homeTeamScore Int      @default(0)
   awayTeamScore Int      @default(0)
   isFinished    Boolean  @default(false)
-  Bet           Bet[]
+  bets          Bet[]
 
   @@map("games")
 }
@@ -42,9 +42,9 @@ model Bet {
   homeTeamScore Int
   awayTeamScore Int
   amountBet     Int
-  Game          Game        @relation(fields: [gameId], references: [id])
+  game          Game        @relation(fields: [gameId], references: [id])
   gameId        Int
-  Participant   Participant @relation(fields: [participantId], references: [id])
+  participant   Participant @relation(fields: [participantId], references: [id])
   participantId Int
   status        String      @default("PENDING")
   amountWon     Int?

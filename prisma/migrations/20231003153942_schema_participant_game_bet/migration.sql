@@ -16,9 +16,9 @@ CREATE TABLE "games" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "homeTeamName" TEXT NOT NULL,
     "awayTeamName" TEXT NOT NULL,
-    "homeTeamScore" INTEGER NOT NULL,
-    "awayTeamScore" INTEGER NOT NULL,
-    "isFinished" BOOLEAN NOT NULL,
+    "homeTeamScore" INTEGER NOT NULL DEFAULT 0,
+    "awayTeamScore" INTEGER NOT NULL DEFAULT 0,
+    "isFinished" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "games_pkey" PRIMARY KEY ("id")
 );
@@ -33,7 +33,7 @@ CREATE TABLE "bets" (
     "amountBet" INTEGER NOT NULL,
     "gameId" INTEGER NOT NULL,
     "participantId" INTEGER NOT NULL,
-    "status" TEXT NOT NULL,
+    "status" TEXT NOT NULL DEFAULT 'PENDING',
     "amountWon" INTEGER,
 
     CONSTRAINT "bets_pkey" PRIMARY KEY ("id")

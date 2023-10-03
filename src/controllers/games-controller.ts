@@ -1,9 +1,10 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import gamesService from '../services/games-service';
+import { CreateGameInput } from '../protocols';
 
 export async function createGame(req: Request, res: Response ) {
-    const { homeTeamName, awayTeamName } = req.body;
+    const { homeTeamName, awayTeamName } = req.body as CreateGameInput;
 
     try {
         const game = await gamesService.createGame({ homeTeamName, awayTeamName });
@@ -30,6 +31,20 @@ export async function getGames(req: Request, res: Response) {
     try {
         const games = await gamesService.getGames();
         return res.send(games);
+    } catch (error) {
+        if (error.name === 'NotFound') {
+            return res.status(httpStatus.NOT_FOUND).send(error);
+        }
+        return res.status(httpStatus.INTERNAL_SERVER_ERROR).send(error);
+    }
+}
+
+export async function getGameById(req:Request, res:Response) {
+    const { gameId } = req.params;
+
+    try {
+        const game = await gamesService.getGameById(Number(gameId));
+        return res.send(game);
     } catch (error) {
         if (error.name === 'NotFound') {
             return res.status(httpStatus.NOT_FOUND).send(error);
