@@ -31,10 +31,10 @@ export async function getGames(req: Request, res: Response) {
 }
 
 export async function getGameById(req:Request, res:Response) {
-    const { gameId } = req.params;
+    const gameId = Number(req.params.id);
 
     try {
-        const game = await gamesService.getGameById(Number(gameId));
+        const game = await gamesService.getGameById(gameId);
         return res.send(game);
     } catch (error) {
         if (error.name === 'NotFound') {

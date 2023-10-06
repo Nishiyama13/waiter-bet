@@ -9,7 +9,7 @@ const gamesRouter = Router();
 gamesRouter
     .post('/', validateBody(createGameSchema), createGame)
     .get('/', getGames)
-    .get('/:gameId', getGameById)
+    .get('/:id', validateParams(idSchema), getGameById)
     .put('/:id/finish',validateBody(finishGameSchema), validateParams(idSchema), finishGameById);
 
 export { gamesRouter };
