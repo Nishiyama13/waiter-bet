@@ -13,3 +13,8 @@ export type CreateGameInput = {
     homeTeamName: string,
     awayTeamName: string
 }
+
+export type FinishGameInput = {
+    homeTeamScore: number,
+    awayTeamScore: number
+}
