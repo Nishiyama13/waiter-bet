@@ -26,3 +26,15 @@ export async function createBet(req: Request, res: Response ) {
         return res.status(httpStatus.BAD_REQUEST).send(error);
     }
 }
+
+export async function getBets(req: Request, res: Response) {
+    try {
+        const bets = await betsService.getBets();
+        return res.send(bets);
+    } catch (error) {
+        if (error.name === 'NotFound') {
+            return res.status(httpStatus.NOT_FOUND).send(error);
+        }
+        return res.status(httpStatus.INTERNAL_SERVER_ERROR).send(error);
+    }
+}

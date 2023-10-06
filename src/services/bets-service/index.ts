@@ -1,6 +1,6 @@
 import { BetType, CreateBetInput, ParticipantType } from "../../protocols";
 import betsRepository from "../../repositories/bets-repository";
-import { createBetError, insufficientFundsError } from "../../errors";
+import { createBetError, insufficientFundsError, notFoundError } from "../../errors";
 import participantsService from "../participants-service";
 import { Bet, Game, Participant } from "@prisma/client";
 import gamesService from "../games-service";
@@ -16,7 +16,7 @@ async function validateBalance(amountBet:number, participantId: number) {
     }
 
     return roundedValue;
-}
+}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
 
 async function validateActiveGame(gameId: number) {
     const game: Game = await gamesService.getGameById(gameId);
@@ -57,8 +57,15 @@ function formatBet(bet: Bet) {
     return formattedBet;
 }
 
+async function getBets(): Promise<Bet[]> {
+    const bets = await betsRepository.findBets();
+    if (!bets) throw notFoundError();
+    return bets;
+}
+
 const betsService = {
     createBet,
+    getBets,
 }
 
 export default betsService;

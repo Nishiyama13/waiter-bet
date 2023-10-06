@@ -34,8 +34,13 @@ async function createBet({ homeTeamScore, awayTeamScore, amountBet, gameId, part
     return createBetTransaction; 
 }
 
+async function findBets() {
+    return prisma.bet.findMany();    
+}
+
 const betsRepository = {
     createBet,
+    findBets,
 }
 
 export default betsRepository;
