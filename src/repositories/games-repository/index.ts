@@ -1,5 +1,5 @@
 import { prisma } from 'config';
-import { CreateGameInput } from '../../protocols';
+import { CreateGameInput, FinishGameType } from '../../protocols';
 
 
 async function create(data: CreateGameInput) {
@@ -35,11 +35,23 @@ async function findGameById(gameId:number) {
     });
 }
 
+async function upDateGameById(data: FinishGameType) {
+    return await prisma.game.update({
+        where: { id: data.id },
+        data: {
+            homeTeamScore: data.homeTeamScore,
+            awayTeamScore: data.awayTeamScore,
+            isFinished: true,
+        },
+    });
+}
+
 const gamesRepository = {
     create,
     findActiveGamesWithTheSameTeamPair,
     findGames,
     findGameById,
+    upDateGameById,
 }
 
 export default gamesRepository;

@@ -15,6 +15,10 @@ export type CreateGameInput = {
 }
 
 export type FinishGameInput = {
+    id?: number,
     homeTeamScore: number,
-    awayTeamScore: number
+    awayTeamScore: number,
+    isFinished?: boolean
 }
+
+export type FinishGameType = Pick<GameType, 'id' | 'homeTeamScore' | 'awayTeamScore' | 'isFinished'>;

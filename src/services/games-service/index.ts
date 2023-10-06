@@ -1,7 +1,7 @@
 import { Bet, Game } from "@prisma/client";
-import { CreateGameInput, GameType } from "../../protocols";
+import { CreateGameInput, FinishGameInput, FinishGameType, GameType } from "../../protocols";
 import gamesRepository from "../../repositories/games-repository";
-import { duplicateGameError, notFoundError } from "../../errors";
+import { duplicateGameError, finishGameError, notFoundError } from "../../errors";
 
 async function validateSinglePairOfTeamsInActiveGame(homeTeamName: string, awayTeamName:string) {
     const existingGame: Game = await gamesRepository.findActiveGamesWithTheSameTeamPair({ homeTeamName, awayTeamName });
@@ -10,6 +10,7 @@ async function validateSinglePairOfTeamsInActiveGame(homeTeamName: string, awayT
         throw duplicateGameError();
     }
 }
+
 async function createGame({ homeTeamName, awayTeamName }: CreateGameInput): Promise <GameType> {
 
     await validateSinglePairOfTeamsInActiveGame(homeTeamName, awayTeamName);
@@ -50,10 +51,28 @@ async function getGameById(gameId: number): Promise<Promise<Game & { bets: Bet[]
     return game; 
 }
 
+async function finishGameById({ id, homeTeamScore, awayTeamScore, isFinished }: FinishGameInput): Promise <GameType> {
+
+    const gameAlreadyBeenFinished = isFinished;
+    if (gameAlreadyBeenFinished) throw finishGameError(`This game whith id ${id} has already been finished!`);
+
+    const game = await gamesRepository.upDateGameById({
+        id,
+        homeTeamScore,
+        awayTeamScore,
+        isFinished,
+    });
+
+    if (!game) throw finishGameError();
+    const formattedGame = formatGame(game);
+    return formattedGame
+}
+
 const gamesService = {
     createGame,
     getGames,
     getGameById,
+    finishGameById,
 }
 
 export default gamesService;
