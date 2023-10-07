@@ -1,5 +1,5 @@
 import { prisma } from 'config';
-import { CreateGameInput, FinishGameInput, FinishGameType, GameType } from '../../protocols';
+import { CreateGameInput, FinishGameInput } from '../../protocols';
 import { finishGameError } from '../../errors';
 import { Bet, Game } from '@prisma/client';
 
@@ -37,7 +37,7 @@ async function findGameById(gameId:number) {
     });
 }
 
-async function upDateGameById(data: FinishGameInput) {
+async function upDateFinishedGameById(data: FinishGameInput) {
     let finishGameTransaction;
     let updateGamePromise:Game;
     const bets = data.bets;
@@ -56,18 +56,18 @@ async function upDateGameById(data: FinishGameInput) {
             });
 
             for (const bet of bets) {
-                const evaluetionResult = await changeStatus(bet, data.homeTeamScore, data.awayTeamScore);
+                const statusResult = await changeStatus(bet, data.homeTeamScore, data.awayTeamScore);
                 await prisma.bet.update({
                     where: {
-                        id: evaluetionResult.id,
+                        id: statusResult.id,
                     },
                     data: {
-                        status: evaluetionResult.status,
+                        status: statusResult.status,
                     },
                 });
 
                 totalBetAmount += bet.amountBet;
-                if (evaluetionResult.status === 'WON') {
+                if (statusResult.status === 'WON') {
                     totalWinningAmount += bet.amountBet;
                 }
             }
@@ -133,7 +133,7 @@ const gamesRepository = {
     findActiveGamesWithTheSameTeamPair,
     findGames,
     findGameById,
-    upDateGameById,
+    upDateFinishedGameById,
 }
 
 export default gamesRepository;
