@@ -46,15 +46,10 @@ export async function getGameById(req:Request, res:Response) {
 
 export async function finishGameById(req: Request, res: Response ) {
     const { homeTeamScore, awayTeamScore } = req.body as FinishGameInput;
-    const gameId = Number(req.params.id);
+    const id = Number(req.params.id);
 
     try {
-        const gameById = await gamesService.getGameById(gameId);
-        if(!gameById) throw res.status(httpStatus.NOT_FOUND);
-        const id = gameById.id;
-        const isFinished = gameById.isFinished;
-
-        const gameFinished = await gamesService.finishGameById({ id, homeTeamScore, awayTeamScore, isFinished });
+        const gameFinished = await gamesService.finishGameById({ id, homeTeamScore, awayTeamScore });
         return res.status(httpStatus.OK).json(gameFinished);
     } catch (error) {
         if (error.name === 'FinishGameError') {

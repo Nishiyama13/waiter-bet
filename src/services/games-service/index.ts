@@ -11,16 +11,8 @@ async function validateSinglePairOfTeamsInActiveGame(homeTeamName: string, awayT
     }
 }
 
-async function createGame({ homeTeamName, awayTeamName }: CreateGameInput): Promise <GameType> {
-
-    await validateSinglePairOfTeamsInActiveGame(homeTeamName, awayTeamName);
-
-    const game = await gamesRepository.create({
-        homeTeamName,
-        awayTeamName,
-    });
-    const formattedGame = formatGame(game);
-    return formattedGame
+function gameIsFinished(id:number, isFinished: boolean) {
+    if (isFinished) throw finishGameError(`This game whith id ${id} has already been finished!`);
 }
 
 function formatGame(game: Game) {
@@ -37,6 +29,18 @@ function formatGame(game: Game) {
     return formattedGame;
 }
 
+async function createGame({ homeTeamName, awayTeamName }: CreateGameInput): Promise <GameType> {
+
+    await validateSinglePairOfTeamsInActiveGame(homeTeamName, awayTeamName);
+
+    const game = await gamesRepository.create({
+        homeTeamName,
+        awayTeamName,
+    });
+    const formattedGame = formatGame(game);
+    return formattedGame
+}
+
 async function getGames(): Promise<Game[]> {
     const games = await gamesRepository.findGames();
     if (!games) throw notFoundError();
@@ -51,16 +55,16 @@ async function getGameById(gameId: number): Promise<Promise<Game & { bets: Bet[]
     return game; 
 }
 
-async function finishGameById({ id, homeTeamScore, awayTeamScore, isFinished }: FinishGameInput): Promise <GameType> {
-
-    const gameAlreadyBeenFinished = isFinished;
-    if (gameAlreadyBeenFinished) throw finishGameError(`This game whith id ${id} has already been finished!`);
+async function finishGameById({ id, homeTeamScore, awayTeamScore }: FinishGameInput): Promise <GameType> {
+    const gameById = await getGameById(id);
+    if(!gameById) throw notFoundError()
+    gameIsFinished(id ,gameById.isFinished);
 
     const game = await gamesRepository.upDateGameById({
-        id,
+        id: gameById.id,
         homeTeamScore,
         awayTeamScore,
-        isFinished,
+        isFinished: gameById.isFinished,
     });
 
     if (!game) throw finishGameError();
