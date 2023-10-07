@@ -55,6 +55,9 @@ export async function finishGameById(req: Request, res: Response ) {
         if (error.name === 'FinishGameError') {
             return res.status(httpStatus.BAD_REQUEST).send(error);
         }
+        if (error.message === 'Unable to close the game') {
+            return res.status(httpStatus.INTERNAL_SERVER_ERROR).send(error);
+        }
         return res.status(httpStatus.BAD_REQUEST).send(error);
     }
 }

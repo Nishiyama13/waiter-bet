@@ -16,8 +16,7 @@ async function validateBalance(amountBet:number, participantId: number) {
     }
 
     return roundedValue;
-}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
-
+}                                                                                                                                                                
 async function validateActiveGame(gameId: number) {
     const game: Game = await gamesService.getGameById(gameId);
 
@@ -41,6 +40,12 @@ async function createBet({ homeTeamScore, awayTeamScore, amountBet, gameId, part
     return formattedBet;
 }
 
+async function getBets(): Promise<Bet[]> {
+    const bets = await betsRepository.findBets();
+    if (!bets) throw notFoundError();
+    return bets;
+}
+
 function formatBet(bet: Bet) {
     const formattedBet: BetType = {
         id: bet.id,
@@ -55,12 +60,6 @@ function formatBet(bet: Bet) {
         amountWon: bet.amountWon,
     };
     return formattedBet;
-}
-
-async function getBets(): Promise<Bet[]> {
-    const bets = await betsRepository.findBets();
-    if (!bets) throw notFoundError();
-    return bets;
 }
 
 const betsService = {

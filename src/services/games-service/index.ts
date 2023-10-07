@@ -47,8 +47,7 @@ async function getGames(): Promise<Game[]> {
     return games;
 }
 
-async function getGameById(gameId: number): Promise<Promise<Game & { bets: Bet[] }>> 
-    {
+async function getGameById(gameId: number): Promise<Promise<Game & { bets: Bet[] }>> {
     const game = await gamesRepository.findGameById(gameId);
 
     if (!game) throw notFoundError();
@@ -59,14 +58,15 @@ async function finishGameById({ id, homeTeamScore, awayTeamScore }: FinishGameIn
     const gameById = await getGameById(id);
     if(!gameById) throw notFoundError()
     gameIsFinished(id ,gameById.isFinished);
+    const bets = gameById.bets
 
     const game = await gamesRepository.upDateGameById({
         id: gameById.id,
         homeTeamScore,
         awayTeamScore,
         isFinished: gameById.isFinished,
+        bets,
     });
-
     if (!game) throw finishGameError();
     const formattedGame = formatGame(game);
     return formattedGame

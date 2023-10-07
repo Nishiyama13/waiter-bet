@@ -1,3 +1,5 @@
+import { Bet } from "@prisma/client"
+
 export type GameType = {
     id: number,
     createdAt: string,
@@ -7,6 +9,7 @@ export type GameType = {
     homeTeamScore: number,
     awayTeamScore: number,
     isFinished: boolean,
+    bets?: Bet[]
 }
 
 export type CreateGameInput = {
@@ -18,7 +21,8 @@ export type FinishGameInput = {
     id?: number,
     homeTeamScore: number,
     awayTeamScore: number,
-    isFinished?: boolean
+    isFinished?: boolean,
+    bets?: Bet[]
 }
 
 export type FinishGameType = Pick<GameType, 'id' | 'homeTeamScore' | 'awayTeamScore' | 'isFinished'>;

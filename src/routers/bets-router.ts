@@ -8,6 +8,5 @@ const betsRouter = Router();
 betsRouter
     .post('/', validateBody(createBetSchema), createBet)
     .get('/', getBets);
-    //.get('/:betId', getBetById);
 
 export { betsRouter };
