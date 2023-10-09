@@ -41,7 +41,7 @@
   "author": "Alícia Nishiyama",
   "license": "ISC",
   "prisma": {
-    "seed": "npm run dev:load-envs -- ts-node prisma/seed.ts"
+    "seed": "npx prisma db seed"
   },
   "dependencies": {
     "@prisma/client": "^5.3.1",
