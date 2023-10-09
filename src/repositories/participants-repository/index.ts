@@ -1,4 +1,4 @@
-import { prisma } from 'config';
+import { prisma } from '../../config';
 import { CreateParticipantInput } from '../../protocols';
 
 async function create(data: CreateParticipantInput) {

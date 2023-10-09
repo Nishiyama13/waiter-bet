@@ -1,4 +1,4 @@
-import { prisma } from 'config';
+import { prisma } from '../../config';
 import { CreateGameInput, FinishGameInput } from '../../protocols';
 import { finishGameError } from '../../errors';
 import { Bet, Game } from '@prisma/client';
