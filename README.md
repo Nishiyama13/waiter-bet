@@ -9,6 +9,7 @@ Back-end for Waiter Bet, a sports betting management solution.
 - [How to run tests](#how-to-run-tests)
 - [Building and starting for production](#building-and-starting-for-production)
 - [Running migrations or generating Prisma clients](#running-migrations-prisma-clients)
+- [Contact](#contact)
 
 ## About
 
@@ -114,7 +115,7 @@ Before running migrations, make sure you have a running Postgres database based 
 
 - `npm run prod:seed` - same, but for production environment.
 
-##  Contact
+## Contact
 
 Feel free to reach out if you have any questions, suggestions, or feedback related to this project. I'm always open to collaborations and constructive discussions.
 
