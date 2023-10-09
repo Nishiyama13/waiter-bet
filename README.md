@@ -9,6 +9,7 @@ Back-end for Waiter Bet, a sports betting management solution.
 - [How to run tests](#how-to-run-tests)
 - [Building and starting for production](#building-and-starting-for-production)
 - [Running migrations or generating Prisma clients](#running-migrations-prisma-clients)
+- [Deployment](#deployment)
 - [Contact](#contact)
 
 ## About
@@ -114,6 +115,10 @@ Before running migrations, make sure you have a running Postgres database based 
 - `npm run dev:seed` 
 
 - `npm run prod:seed` - same, but for production environment.
+
+## Deployment
+
+The Waiter Bet Back-end is deployed and can be accessed at [https://waiter-bet-api.onrender.com](https://waiter-bet-api.onrender.com).
 
 ## Contact
 
