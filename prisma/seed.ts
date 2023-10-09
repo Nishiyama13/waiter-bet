@@ -7,7 +7,7 @@ async function main() {
     if (!participant) {
         participant = await prisma.participant.create({
             data: {
-                name: "Weiter Bet",
+                name: "Waiter Bet",
                 balance: 0,
             },
         });
