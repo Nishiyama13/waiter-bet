@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
+  "engines": {
+    "node": "16.17.0"
+  },
   "scripts": {
+    "postinstall": "yarn prisma:generate",
     "prebuild": "rm -rf dist",
     "build": "tsc -p tsconfig.build.json",
     "start": "node dist/index.js",
@@ -18,7 +22,7 @@
     "prod:seed": "npm run prod:load-envs prisma db seed",
     "dev:seed": "npm run dev:load-envs prisma db seed",
     "test:seed": "npm run test:load-envs prisma db seed",
-    "generate": "npx prisma generate",
+    "prisma:generate": "npx prisma generate",
     "prisma:pull": "npx prisma db pull",
     "test": "cross-env NODE_ENV=test jest --passWithNoTests --runInBand",
     "test:coverage": "cross-env NODE_ENV=test jest --passWithNoTests --runInBand --coverage --collectCoverageFrom='./src/**'",
