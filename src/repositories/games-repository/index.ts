@@ -93,6 +93,25 @@ async function upDateFinishedGameById(data: FinishGameInput) {
                         where: { id: bet.participantId },
                         data: { balance: newBalance },
                     });
+                    const waiterBetBalance = await prisma.participant.findUnique({
+                        where: { name: "Waiter Bet" },
+                    });
+                    const newWaiterBetBalance = waiterBetBalance.balance + evaluetionResult.profit
+                    await prisma.participant.update({
+                        where: { name: "Waiter Bet" },
+                        data: { balance: newWaiterBetBalance },
+                    });
+                }
+
+                if (evaluetionResult.status === 'LOST') {                    
+                    const waiterBetBalance = await prisma.participant.findUnique({
+                        where: { name: "Waiter Bet" },
+                    });
+                    const newWaiterBetBalance = waiterBetBalance.balance + evaluetionResult.profit
+                    await prisma.participant.update({
+                        where: { name: "Waiter Bet" },
+                        data: { balance: newWaiterBetBalance },
+                    });
                 }
             }
         });
@@ -104,20 +123,24 @@ async function upDateFinishedGameById(data: FinishGameInput) {
 }
 
 async function evaluateBet(bet: Bet, homeTeamScore: number, awayTeamScore: number, totalBetAmount: number, totalWinningAmount: number) {
- 
+    let profit = 0;
     const hauseEdge = 0.3;
 
     const status = bet.homeTeamScore === homeTeamScore && bet.awayTeamScore === awayTeamScore ? 'WON' : 'LOST';
 
     let amountWon = 0;
     if (status === 'WON') {
-        amountWon = totalWinningAmount === 0 ? 0 : ((bet.amountBet / totalWinningAmount) * totalBetAmount * (1 - hauseEdge))
+        amountWon = totalWinningAmount === 0 ? 0 : ((bet.amountBet / totalWinningAmount) * totalBetAmount * (1 - hauseEdge));
+        profit = (bet.amountBet - amountWon);
+    }
+    if (status === 'LOST') {
+        profit = bet.amountBet;
     }
 
     const id = bet.id;
     const roundedValue = Math.floor(amountWon)
 
-    return { id, status, amountWon: roundedValue };
+    return { id, status, amountWon: roundedValue, profit };
 }
 
 async function changeStatus(bet: Bet, homeTeamScore: number, awayTeamScore: number) {
