@@ -2,9 +2,8 @@ import { faker } from '@faker-js/faker';
 //import dayjs from 'dayjs';
 import httpStatus from 'http-status';
 import supertest from 'supertest';
-//import { createParticipant } from '../factories';
+import { createParticipant } from '../factories';
 import { cleanDb } from '../helpers';
-//import { duplicateParticipantError } from '../errors';
 import app, { init } from '@/app';
 
 beforeAll(async () => {
@@ -28,4 +27,26 @@ describe('POST /participants', () => {
 
         expect(response.status).toBe(httpStatus.BAD_REQUEST);
     });
+
+    describe('When body is valid', () => {
+        const generateValidParticipantBody = ({
+            name: faker.person.fullName(),
+            balance: 1000,
+        });
+
+        it('Shoulder response with status 201 when given participant name unique', async () => {
+
+            const response = await server.post('/participants').send(generateValidParticipantBody); 
+
+            expect(response.status).toBe(httpStatus.CREATED);
+        });
+
+        it('Shoulder response with status 409 when the participant already exist', async () => {
+            const participantDuplicate = generateValidParticipantBody;
+
+            const response = await server.post('/participants').send(participantDuplicate); 
+
+            expect(response.status).toBe(httpStatus.CONFLICT);
+        });
+    })
 });

@@ -3,10 +3,11 @@ import { prisma } from '@/config'
 import { Participant } from '@prisma/client';
 
 export async function createParticipant(params: Partial<Participant> = {}): Promise<Participant> {
+
     return prisma.participant.create({
         data: {
-            name: faker.person.fullName(),
-            balance: faker.number.int({ min: 1000}),
+            name: params.name || faker.person.fullName(),
+            balance: params.balance || faker.number.int({ min: 1000}),
         }
     })
 }
