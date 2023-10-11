@@ -11,7 +11,7 @@ export async function createParticipant(params: Partial<Participant> = {}): Prom
     })
 }
 
-export async  function createWaiterBet() {
+export async function createWaiterBet() {
     let participant = await prisma.participant.findFirst();
     if (!participant) {
         participant = await prisma.participant.create({
