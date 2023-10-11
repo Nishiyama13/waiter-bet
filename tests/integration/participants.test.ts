@@ -11,6 +11,10 @@ beforeAll(async () => {
     await cleanDb();
 });
 
+beforeEach(async () => {
+    await cleanDb();
+})
+
 const server = supertest(app);
 
 describe('POST /participants', () => {
@@ -76,11 +80,21 @@ describe('POST /participants', () => {
         });
 
         it('Shoulder response with status 409 when the participant already exist', async () => {
+            await server.post('/participants').send(generateValidParticipantBody); 
             const participantDuplicate = generateValidParticipantBody;
 
             const response = await server.post('/participants').send(participantDuplicate); 
 
             expect(response.status).toBe(httpStatus.CONFLICT);
         });
+    });
+});
+
+describe('GET /participants', () => {
+    it('Should response with status 200 and an empty array when participants has not exist', async () => {
+        const response = await server.get('/participants');
+
+        expect(response.status).toBe(httpStatus.OK);
+        expect(response.body).toEqual([]);
     });
 });
