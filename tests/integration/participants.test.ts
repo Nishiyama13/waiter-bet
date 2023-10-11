@@ -20,12 +20,46 @@ describe('POST /participants', () => {
         expect(response.status).toBe(httpStatus.BAD_REQUEST);
     });
 
-    it('Should response with status 400 when body is not valid', async () => {
-        const invalidBody = { [faker.person.fullName()]:faker.person.fullName} ;
+    it('Should response with status 400 when body is not valid, name not sent', async () => {
+        const invalidBody = { balance: faker.number.int({min: 1000})} ;
 
         const response = await server.post('/participants').send(invalidBody);
 
         expect(response.status).toBe(httpStatus.BAD_REQUEST);
+        expect(response.body).toEqual({
+            name: 'InvalidDataError',
+            message: 'Invalid data error',
+            details: [ '\"name\" is required' ]
+        });
+    });
+
+    it('Should response with status 400 when body is not valid, balance not sent', async () => {
+        const invalidBody = { name: faker.person.fullName()} ;
+
+        const response = await server.post('/participants').send(invalidBody);
+
+        expect(response.status).toBe(httpStatus.BAD_REQUEST);
+        expect(response.body).toEqual({
+            name: 'InvalidDataError',
+            message: 'Invalid data error',
+            details: [ '"balance" is required' ]
+        });
+    });
+
+    it('Should response with status 400 when balance is less than 1000', async () => {
+        const generateInvalidBalanceParticipantBody = ({
+            name: faker.person.fullName(),
+            balance: 100,
+        });
+
+        const response = await server.post('/participants').send(generateInvalidBalanceParticipantBody);
+
+        expect(response.status).toBe(httpStatus.BAD_REQUEST);
+        expect(response.body).toEqual({
+            name: 'InvalidDataError',
+            message: 'Invalid data error',
+            details: [ '"balance\" must be greater than or equal to 1000' ]
+        });
     });
 
     describe('When body is valid', () => {
@@ -48,5 +82,5 @@ describe('POST /participants', () => {
 
             expect(response.status).toBe(httpStatus.CONFLICT);
         });
-    })
+    });
 });
