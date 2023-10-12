@@ -27,7 +27,6 @@ describe('POST /games', () => {
         const invalidBody = { awayTeamName: faker.company.name()} ;
 
         const response = await server.post('/games').send(invalidBody);
-        console.log(response.body);
 
         expect(response.status).toBe(httpStatus.BAD_REQUEST);
         expect(response.body).toEqual({
@@ -37,4 +36,18 @@ describe('POST /games', () => {
         });
     });
 
+    it('Should response with status 400 when body is not valid, awayTeamName not sent', async () => {
+        const invalidBody = { homeTeamName: faker.company.name()} ;
+
+        const response = await server.post('/games').send(invalidBody);
+
+        expect(response.status).toBe(httpStatus.BAD_REQUEST);
+        expect(response.body).toEqual({
+            name: 'InvalidDataError',
+            message: 'Invalid data error',
+            details: [ '"awayTeamName" is required' ]
+        });
+    });
+
 });
+
