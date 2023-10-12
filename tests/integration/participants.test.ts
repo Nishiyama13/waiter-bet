@@ -132,6 +132,18 @@ describe('GET /participants/:id', () => {
         });
     });
 
+    it('Should response with status 400 when id is not a number', async () => {      
+        const invalidId = 'string012';
+        const response = await server.get(`/participants/${invalidId}`);
+
+        expect(response.status).toBe(httpStatus.BAD_REQUEST);
+        expect(response.body).toEqual({
+            name: 'InvalidDataError',
+            message: 'Invalid data error',
+            details: [ '"id" must be a number' ]
+        });
+    });
+
     it('Should response with status 200 and a data of participant by id, without registered bets', async () => {
         const participant = await createParticipant();
         const participantId = participant.id;
