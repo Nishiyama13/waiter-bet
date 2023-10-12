@@ -97,4 +97,12 @@ describe('GET /participants', () => {
         expect(response.status).toBe(httpStatus.OK);
         expect(response.body).toEqual([]);
     });
+
+    it('Should response with status 200 and a list of participants', async () => {
+        await createParticipant();
+        await createParticipant();
+        const response = await server.get('/participants');
+
+        expect(response.status).toBe(httpStatus.OK);
+    });
 });

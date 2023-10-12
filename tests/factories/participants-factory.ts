@@ -7,9 +7,9 @@ export async function createParticipant(params: Partial<Participant> = {}): Prom
     return prisma.participant.create({
         data: {
             name: params.name || faker.person.fullName(),
-            balance: params.balance || faker.number.int({ min: 1000}),
-        }
-    })
+            balance: params.balance || faker.number.int({ min: 1000, max:10000}),
+        },
+    });
 }
 
 export async function createWaiterBet() {
