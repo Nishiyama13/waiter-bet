@@ -106,3 +106,22 @@ describe('GET /participants', () => {
         expect(response.status).toBe(httpStatus.OK);
     });
 });
+
+describe('GET /participants/:id', () => {
+
+    it('Should response with status 200 and a data of participant by id, without registered bets', async () => {
+        const participant = await createParticipant();
+        const participantId = participant.id;
+        const response = await server.get(`/participants/${participantId}`);
+
+        expect(response.status).toBe(httpStatus.OK);
+        expect(response.body).toEqual({
+            id: participant.id,
+            createdAt: participant.createdAt.toISOString(),
+            updatedAt: participant.updatedAt.toISOString(),
+            name: participant.name,
+            balance: participant.balance,
+            bets: []
+        });
+    });
+});
