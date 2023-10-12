@@ -55,11 +55,20 @@ describe('POST /games', () => {
             awayTeamName: faker.company.name(),
         });
 
-        it('Shoulder response with status 201 when given participant name unique', async () => {
+        it('Shoulder response with status 201 when given game unique or similar game has already been finalized', async () => {
 
             const response = await server.post('/games').send(generateValidGameBody); 
 
             expect(response.status).toBe(httpStatus.CREATED);        
+        });
+
+        it('Shoulder response with status 409 when the game already exist and game not yet finished', async () => {
+            await server.post('/games').send(generateValidGameBody); 
+            const participantDuplicate = generateValidGameBody;
+
+            const response = await server.post('/games').send(participantDuplicate); 
+
+            expect(response.status).toBe(httpStatus.CONFLICT);
         });
     });
 
