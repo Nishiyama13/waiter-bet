@@ -109,7 +109,19 @@ describe('GET /participants', () => {
 
 describe('GET /participants/:id', () => {
     it('Should response with status 400 when id is not valid, negative id', async () => {      
-        const invalidId = -1
+        const invalidId = -1;
+        const response = await server.get(`/participants/${invalidId}`);
+
+        expect(response.status).toBe(httpStatus.BAD_REQUEST);
+        expect(response.body).toEqual({
+            name: 'InvalidDataError',
+            message: 'Invalid data error',
+            details: [ '"id" must be a positive number' ]
+        });
+    });
+
+    it('Should response with status 400 when id is not valid, id = 0', async () => {      
+        const invalidId = 0;
         const response = await server.get(`/participants/${invalidId}`);
 
         expect(response.status).toBe(httpStatus.BAD_REQUEST);
