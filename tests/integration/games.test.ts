@@ -49,5 +49,18 @@ describe('POST /games', () => {
         });
     });
 
-});
+    describe('When body is valid', () => {
+        const generateValidGameBody = ({
+            homeTeamName: faker.company.name(),
+            awayTeamName: faker.company.name(),
+        });
 
+        it('Shoulder response with status 201 when given participant name unique', async () => {
+
+            const response = await server.post('/games').send(generateValidGameBody); 
+
+            expect(response.status).toBe(httpStatus.CREATED);        
+        });
+    });
+
+});
