@@ -144,19 +144,33 @@ describe('GET /participants/:id', () => {
         });
     });
 
-    it('Should response with status 200 and a data of participant by id, without registered bets', async () => {
-        const participant = await createParticipant();
-        const participantId = participant.id;
-        const response = await server.get(`/participants/${participantId}`);
+    describe('When id is valid', () => {
+        it('Should response with status 404 when id is not found', async () => {      
+            const participantId = 2;
+            const response = await server.get(`/participants/${participantId}`);
+    
+            expect(response.status).toBe(httpStatus.NOT_FOUND);
+            expect(response.body).toEqual({
+                name: 'NotFoundError',
+                message: `Participant not found with id${participantId}`
+            });
+        });
 
-        expect(response.status).toBe(httpStatus.OK);
-        expect(response.body).toEqual({
-            id: participant.id,
-            createdAt: participant.createdAt.toISOString(),
-            updatedAt: participant.updatedAt.toISOString(),
-            name: participant.name,
-            balance: participant.balance,
-            bets: []
+        it('Should response with status 200 and a data of participant by id, without registered bets', async () => {
+            const participant = await createParticipant();
+            const participantId = participant.id;
+            const response = await server.get(`/participants/${participantId}`);
+    
+            expect(response.status).toBe(httpStatus.OK);
+            expect(response.body).toEqual({
+                id: participant.id,
+                createdAt: participant.createdAt.toISOString(),
+                updatedAt: participant.updatedAt.toISOString(),
+                name: participant.name,
+                balance: participant.balance,
+                bets: []
+            });
         });
     });
+
 });

@@ -20,7 +20,7 @@ export async function getParticipants(req: Request, res: Response) {
         const participants = await participantsService.getParticipants();
         return res.send(participants);
     } catch (error) {
-        if (error.name === 'NotFound') {
+        if (error.name === 'NotFoundError') {
             return res.status(httpStatus.NOT_FOUND).send(error);
         }
         return res.status(httpStatus.INTERNAL_SERVER_ERROR).send(error);
@@ -34,7 +34,7 @@ export async function getParticipantById(req:Request, res:Response) {
         const participant = await participantsService.getParticipantById(Number(id));
         return res.send(participant);
     } catch (error) {
-        if (error.name === 'NotFound') {
+        if (error.name === 'NotFoundError') {
             return res.status(httpStatus.NOT_FOUND).send(error);
         }
         return res.status(httpStatus.INTERNAL_SERVER_ERROR).send(error);
